@@ -1,0 +1,9 @@
+[submodule "vscode"]
+	path = vscode
+	url = https://github.com/KasraF/vscode
+[submodule "MonacoServer"]
+	path = MonacoServer
+	url = https://github.com/KasraF/MonacoServer
+[submodule "monaco-editor"]
+	path = monaco-editor
+	url = https://github.com/KasraF/monaco-editor
