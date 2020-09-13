@@ -30,14 +30,14 @@ cd vscode && git checkout pyodide-test && cd ../;
 Then, we can develop each of the modules, and push the changes as with any regular git repository.
 
 ## Modules
-1. `vscode`: This is the repository for the original Visual Studio Code source. However, we only compile the
+### `vscode`: This is the repository for the original Visual Studio Code source. However, we only compile the
    Monaco Editor sources from this. In particular, we use the files under `src/vs/editor/contrib/rtv/remote` rather
    than their equivalents in `src/vs/editor/contrib/rtv`, and build with:   
    ```shell
    yarn run gulp editor-distro
    ```
    which creates the `monaco-editor-core` package used in...
-2. `monaco-editor`: This repository is a simple npm package that combines all the sources necessary to create the web
+### `monaco-editor`: This repository is a simple npm package that combines all the sources necessary to create the web
    version of the Monaco Editor using Webpack. However, to make it use our custom version of the `vscode` source code,
    we need to link our build to this package, which is done with:
    ```
@@ -46,7 +46,7 @@ Then, we can develop each of the modules, and push the changes as with any regul
    cd ../../monaco-editor
    yarn link monaco-editor-core
    ```
-3. `pyodide`: This repository is a fork of `iodide-project/pyodide`, and contains the code for running Python directly
+### `pyodide`: This repository is a fork of `iodide-project/pyodide`, and contains the code for running Python directly
    in the browser. The only changes in this fork (as of time writing) are for adding the `Pillow` python package, so
    the [build instructions](https://pyodide.readthedocs.io/en/latest/building_from_sources.html) from the original 
    repository should still work. Keep in mind that the build will take a very long time (more than an hour on my 
@@ -57,7 +57,7 @@ Then, we can develop each of the modules, and push the changes as with any regul
    cp -r ../../../../../../pyodide/build/* .
    git checkout webworker.js # Checkout the webworker again, because we modified it
    ```
-4. `MonacoServer`: This repository contains the web server that puts everything together and actually serves the files.
+### `MonacoServer`: This repository contains the web server that puts everything together and actually serves the files.
    See the README for that repository for an overview of its source code and how to build and run it.
 
 ## Building
