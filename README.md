@@ -22,7 +22,7 @@ want to build and run it. For development, however, we need to track those branc
 
 ``` shell
 cd monaco-editor && git checkout master && cd ../;
-cd MonacoServer && git checkout pyodide-test && cd ../;
+cd MonacoServer && git checkout master && cd ../;
 cd pyodide && git checkout master && cd ../;
 cd vscode && git checkout pyodide-test && cd ../;
 ```
