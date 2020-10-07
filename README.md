@@ -23,7 +23,6 @@ want to build and run it. For development, however, we need to track those branc
 ``` shell
 cd monaco-editor && git checkout master && cd ../;
 cd MonacoServer && git checkout master && cd ../;
-cd pyodide && git checkout master && cd ../;
 cd vscode && git checkout pyodide-test && cd ../;
 ```
 
@@ -50,33 +49,18 @@ cd ../../monaco-editor
 yarn link monaco-editor-core
 ```
 
-### Pyodide
-This repository is a fork of `iodide-project/pyodide`, and contains the code for running Python directly
-in the browser. The only changes in this fork (as of time writing) are for adding the `Pillow` python package, so
-the [build instructions](https://pyodide.readthedocs.io/en/latest/building_from_sources.html) from the original 
-repository should still work. Keep in mind that the build will take a very long time (more than an hour on my 
-laptop), but if you install `ccache` as they recommend, subsequent builds should only take a few minutes. After
-building, you can copy the files to the expected location with this command:
-```shell
-cd MonacoServer/src/main/resources/static/pyodide
-cp -r ../../../../../../pyodide/build/* .
-git checkout webworker.js # Checkout the webworker again, because we modified it
-```
-
 ### Monaco Server
 This repository contains the web server that puts everything together and actually serves the files. See the `README` in
 it that repository for an overview of its source code and how to build and run it.
 
 ## Building
 Building everything from scratch involves the following steps:
-1. Build `pyodide` and copy the build files to `MonacoServer`. 
-2. Build `monaco-editor-core` from the `vscode` repository.
-3. Build `monaco-editor` from the `monaco-editor` repository _using our build of_ `vscode`.
-4. Build `MonacoServer` _using our build of_ `monaco-editor`.
+1. Build `monaco-editor-core` from the `vscode` repository.
+2. Build `monaco-editor` from the `monaco-editor` repository _using our build of_ `vscode`.
+3. Build `MonacoServer` _using our build of_ `monaco-editor`.
 
-Since it's unlikely that we need to change `pyodide`, for subsequent rebuilds we can skip step #1. Similarly, we can
-skip steps #2 and #3 if the `vscode` source has not changed. However, if we change `vscode` we need to perform _both_
-steps 2 and 3.
+We can skip steps #2 and #3 if the `vscode` source has not changed. However, if we change `vscode` we need to perform 
+_both_ steps 2 and 3.
 
 Since these steps are quite involved and compilation is slow, we can use the `fish` scripts provided in this meta
 repository to build and rebuild:

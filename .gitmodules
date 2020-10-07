@@ -8,6 +8,3 @@
 [submodule "monaco-editor"]
 	path = monaco-editor
 	url = https://github.com/KasraF/monaco-editor
-[submodule "pyodide"]
-	path = pyodide
-	url = https://github.com/KasraF/pyodide

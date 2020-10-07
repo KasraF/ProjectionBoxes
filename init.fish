@@ -2,19 +2,6 @@
 set _root $root;
 set root (pwd);
 
-# Build Pyodide
-cd $root/pyodide
-and echo
-and echo
-and echo "====================================================================================="
-and echo "==                                    Pyodide                                      =="
-and echo "====================================================================================="
-and echo
-and make
-and cd $root/MonacoServer/src/main/resources/static/pyodide
-and cp -r $root/pyodide/build/* .
-and git checkout webworker.js # Checkout the webworker again, because we modified it
-
 # Build vscode
 and echo
 and echo
@@ -53,6 +40,13 @@ and echo
 and cd $root/MonacoServer
 and yarn
 and yarn build
+and echo "Downloading the pyodide build..."
+and cd src/main/resources/static/pyodide
+and wget "https://github.com/KasraF/pyodide/releases/download/monaco/pyodide_with_pillow.zip"
+and unzip pyodide_with_pillow.zip
+and rm pyodide_with_pillow.zip
+and cd $root/MonacoServer
+and echo "Done!"
 and mvn clean install
 and cd $root
 and set root $_root
