@@ -2,6 +2,9 @@
 set _root $root;
 set root (pwd);
 
+# Set up git
+git submodule update --init --remote
+
 # Build vscode
 and echo
 and echo
@@ -10,6 +13,7 @@ and echo "==                               Visual Stdio Code                    
 and echo "====================================================================================="
 and echo
 and cd $root/vscode
+and git checkout pyodide-test
 and yarn
 and yarn compile
 and yarn run gulp editor-distro
@@ -24,6 +28,7 @@ and echo "==                                 Monaco Editor                      
 and echo "====================================================================================="
 and echo
 and cd $root/monaco-editor
+and git checkout master
 and yarn link monaco-editor-core
 and yarn
 and yarn release
@@ -38,6 +43,7 @@ and echo "==                                 Monaco Server                      
 and echo "====================================================================================="
 and echo
 and cd $root/MonacoServer
+and git checkout master
 and yarn
 and yarn build
 and echo "Downloading the pyodide build..."

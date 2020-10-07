@@ -10,23 +10,13 @@ A meta repository for the Projection Box projects.
 6. [TODOs](#todos) 
 
 ## Setup
-This repository contains the other repositories as Git Submodules. So, after cloning this repository, we need to 
-initialized the other repositories with:
+This repository contains the other repositories as Git Submodules. You can read about them in the [modules](#modules)
+section if you're interested, but even if not, you need to initialize each git submodules, and build them in a
+particular order _once_ before you can run `MonacoServer`. So, while you are reading the rest of this README, I 
+highly recommend running the `init.fish` script provided in this meta-repository.
 
-``` shell
-git submodule update --init --remote
-```
-
-This should checkout the latest commit from the `pyodide` branches of each repository, and is sufficient if we only
-want to build and run it. For development, however, we need to track those branches manually:
-
-``` shell
-cd monaco-editor && git checkout master && cd ../;
-cd MonacoServer && git checkout master && cd ../;
-cd vscode && git checkout pyodide-test && cd ../;
-```
-
-Then, we can develop each of the modules, and push the changes as with any regular git repository.
+It initializes each git module, checks out the correct branch for each, and builds them in the right order. If you
+run it now, hopefully you will have a ready-to-run local build by the end of this README!
 
 ## Modules
 ### Visual Studio Code
@@ -62,12 +52,8 @@ Building everything from scratch involves the following steps:
 We can skip steps #2 and #3 if the `vscode` source has not changed. However, if we change `vscode` we need to perform 
 _both_ steps 2 and 3.
 
-Since these steps are quite involved and compilation is slow, we can use the `fish` scripts provided in this meta
-repository to build and rebuild:
-
-1. `init.fish` builds _everything_ assuming no previous builds exists. Run this _once_ after checkout out all the
-   submodules.
-2. `build.fish` only performs steps #2-4, and assumes that those `npm` packages are already linked.
+Since these steps are quite involved and compilation is slow, we can use another `fish` scripts provided in this meta
+repository to rebuild: `build.fish` only performs steps #2-4, and assumes that those `npm` packages are already linked.
 
 ## Running
 See the instructions in `MonacoEditor`'s `README` for running the server.
