@@ -1,0 +1,13 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+
+release
+target
+node_modules
+pyodide
+projection_boxes.zip
+yarn.lock
+package-lock.json

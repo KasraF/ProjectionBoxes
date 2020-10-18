@@ -22,6 +22,9 @@ and cd release
 and echo "  Linking monaco-editor..."
 and yarn link >> "$_log"
 and echo "  Monaco Editor build succeeded!"
-and cd ../../MonacoServer/
-and echo "Rebuilding Monaco Server:"
-and mvn clean install -T4 >> "$_log";
+and cd ../../files/
+and echo "Putting everything together:"
+and yarn build
+and yarn package
+and cd release
+and http-server .

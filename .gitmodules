@@ -1,10 +1,7 @@
 [submodule "vscode"]
 	path = vscode
 	url = https://github.com/UCSD-PL/vscode
-	branch = pyodide-test
-[submodule "MonacoServer"]
-	path = MonacoServer
-	url = https://github.com/KasraF/MonacoServer
+	branch = static-pb
 [submodule "monaco-editor"]
 	path = monaco-editor
 	url = https://github.com/KasraF/monaco-editor
