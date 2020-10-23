@@ -23,13 +23,13 @@ $(function() {
 	window.editor = monaco.editor.create(
 		document.getElementById('editor'), 
 		{
-			value: "def sort(l):\n" +
-				"\tr = []\n" +
-				"\tfor x in l:\n" +
-				"\t\tfor i,y in enumerate(r):\n" +
-				"\t\t\t\n" +
-				"\treturn r\n\n" +
-				"sort([8,2,7])",
+			value: "def avg(l):\n" +
+			       "    s = 0\n" +
+			       "    for x in l:\n" +
+			       "        s = s + x\n" +
+			       "    n = len(l)\n" +
+			       "    return s / n\n\n" +
+			       "k = avg([1, 5, 6, 10])\n",
 			language: 'python',
 			theme: 'vs-dark',
 			automaticLayout: true,
