@@ -27,17 +27,16 @@ class RTVRunPy {
 	}
 }
 
-//console.log("Creating new console...");
-// self.languagePluginUrl = 'https://monaco.goto.ucsd.edu/pyodide/';
-// self.languagePluginUrl = 'https://editor.weirdmachine.me/pyodide/';
-// self.languagePluginUrl = 'http://lvh.me:8080/pyodide/';
 self.languagePluginUrl = 'pyodide/';
 console.log("Importing Pyodide script...");
 importScripts('./pyodide/pyodide.js');
 languagePluginLoader
 	.then(() => {
 		console.log("Importing Numpy and Pillow...");
-		return Promise.all([pyodide.loadPackage('numpy'), pyodide.loadPackage('Pillow')]);
+		return Promise.all([
+			pyodide.loadPackage('numpy'),
+			pyodide.loadPackage('Pillow'),
+			pyodide.loadPackage('CSE8AImage')]);
 	})
 	.then(() => {
 		console.log("Importing pyodide and os...");
@@ -67,6 +66,11 @@ languagePluginLoader
 			"__start_env__ = sys.modules['__main__'].__dict__.copy()");
 	})
 	.then(() => {
+		// Load the images used by the imaging library
+		return pyodide.runPythonAsync(
+			"pyodide.eval_code(pyodide.open_url(\"/editor/img-library.py\").getvalue(), globals())");
+	})
+	.then(() => {
 		// Replace the console to forward Pyodide output to Monaco
 		self.postMessage(new RTVRunPy(-1, ResponseType.LOADED, ''));
 	});
@@ -85,12 +89,12 @@ self.onmessage = function (msg) {
 			}
 
 			const clearEnv =
-				"for k in list(sys.modules['__main__'].__dict__.keys()):\n" +
-				"\tif k == '__start_env__': continue\n" +
-				"\tif k not in __start_env__:\n" +
-				"\t\tdel sys.modules['__main__'].__dict__[k]\n" +
+				"for _k_ in list(sys.modules['__main__'].__dict__.keys()):\n" +
+				"\tif _k_ == '__start_env__': continue\n" +
+				"\tif _k_ not in __start_env__:\n" +
+				"\t\tdel sys.modules['__main__'].__dict__[_k_]\n" +
 				"\telse:\n" +
-				"\t\tsys.modules['__main__'].__dict__[k] = __start_env__[k]\n" +
+				"\t\tsys.modules['__main__'].__dict__[_k_] = __start_env__[_k_]\n" +
 				"import sys\n";
 
 			const runPy =
