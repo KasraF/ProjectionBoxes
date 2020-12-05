@@ -68,7 +68,7 @@ languagePluginLoader
 	.then(() => {
 		// Load the images used by the imaging library
 		return pyodide.runPythonAsync(
-			"pyodide.eval_code(pyodide.open_url(\"/editor/img-library.py\").getvalue(), globals())");
+			"pyodide.eval_code(pyodide.open_url(\"editor/img-library.py\").getvalue(), globals())");
 	})
 	.then(() => {
 		// Replace the console to forward Pyodide output to Monaco
