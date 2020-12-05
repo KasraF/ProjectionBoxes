@@ -23,6 +23,13 @@ and echo "  Linking monaco-editor..."
 and yarn link >> "$_log"
 and echo "  Monaco Editor build succeeded!"
 and cd ../../files/
+and if test ! -d pyodide;
+	echo "Downloading pyodide...";
+	wget 'https://github.com/KasraF/pyodide/releases/download/monaco/pyodide_with_pillow.zip';
+	and unzip -d pyodide pyodide_with_pillow.zip;
+	and rm pyodide_with_pillow.zip;
+	echo "Pyodide done."
+end;
 and echo "Putting everything together:"
 and yarn build
 and yarn package
