@@ -7,7 +7,8 @@ def download_file(filename):
 	req.send(None)
 
 	f = open(filename, 'wb')
-	f.write(bytearray(req.response))
+
+	f.write(req.response.to_bytes())
 	f.close()
 
 download_file('cat.png')

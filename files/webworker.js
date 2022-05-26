@@ -27,54 +27,6 @@ class RTVRunPy {
 	}
 }
 
-self.languagePluginUrl = 'pyodide/';
-console.log("Importing Pyodide script...");
-importScripts('./pyodide/pyodide.js');
-languagePluginLoader
-	.then(() => {
-		console.log("Importing Numpy and Pillow...");
-		return Promise.all([
-			pyodide.loadPackage('numpy'),
-			pyodide.loadPackage('Pillow'),
-			pyodide.loadPackage('CSE8AImage')]);
-	})
-	.then(() => {
-		console.log("Importing pyodide and os...");
-		return pyodide.runPythonAsync('import pyodide\nimport os\n');
-	})
-	.then(() => {
-		console.log("Loading core.py, run.py, and img-summary.py");
-		const runpy = pyodide.runPythonAsync(
-			'import pyodide\n' +
-			'import os\n' +
-			'import sys\n' +
-			'import io\n' +
-			'runpy = open("run.py", "w")\n' +
-			'runpy.write(pyodide.open_url("editor/run.py").getvalue())\n' +
-			'runpy.close()');
-		const imgSummary = pyodide.runPythonAsync(
-			'import pyodide\n' +
-			'import os\n' +
-			'img_summary = open("img-summary.py", "w")\n' +
-			'img_summary.write(pyodide.open_url("editor/img-summary.py").getvalue())\n' +
-			'img_summary.close()');
-		return Promise.all([runpy, imgSummary]);
-	})
-	.then(() => {
-		// Store the load environment to use later.
-		return pyodide.runPythonAsync(
-			"__start_env__ = sys.modules['__main__'].__dict__.copy()");
-	})
-	.then(() => {
-		// Load the images used by the imaging library
-		return pyodide.runPythonAsync(
-			"pyodide.eval_code(pyodide.open_url(\"editor/img-library.py\").getvalue(), globals())");
-	})
-	.then(() => {
-		// Replace the console to forward Pyodide output to Monaco
-		self.postMessage(new RTVRunPy(-1, ResponseType.LOADED, ''));
-	});
-
 self.onmessage = function (msg) {
 	const id = msg.data.id;
 
@@ -205,3 +157,51 @@ self.onmessage = function (msg) {
 			self.postMessage(new RTVRunPy(id, ResponseType.ERROR, 'Unrecognized request: ' + msg));
 	}
 }
+
+let pyodide;
+
+async function main() {
+    console.log('Loading pyodide...');
+    importScripts('pyodide/pyodide.js');
+    pyodide = await loadPyodide({ indexURL: "/pyodide/" });
+
+    // Then, import the modules
+    console.log('Importing python modules...');
+    await pyodide.loadPackage(['numpy', 'Pillow']);
+    await pyodide.runPythonAsync('import pyodide\nimport os\nimport sys\nimport io\n');
+
+	// pyodide.loadPackage('CSE8AImage')
+
+	console.log("Loading run.py and img-summary.py");
+	const runpy = pyodide.runPythonAsync(
+		'import pyodide\n' +
+			'import os\n' +
+			'import sys\n' +
+			'import io\n' +
+			'runpy = open("run.py", "w")\n' +
+			'runpy.write(pyodide.open_url("editor/run.py").getvalue())\n' +
+			'runpy.close()');
+	const imgSummary = pyodide.runPythonAsync(
+		'import pyodide\n' +
+			'import os\n' +
+			'img_summary = open("img-summary.py", "w")\n' +
+			'img_summary.write(pyodide.open_url("editor/img-summary.py").getvalue())\n' +
+			'img_summary.close()');
+	await Promise.all([runpy, imgSummary]);
+
+	// Store the load environment to use later.
+	await pyodide.runPythonAsync(
+			"__start_env__ = sys.modules['__main__'].__dict__.copy()");
+
+	// Load the images used by the imaging library
+    console.log('Loading cat image...');
+    await pyodide.runPythonAsync(
+		"pyodide.eval_code(pyodide.open_url(\"editor/img-library.py\").getvalue(), globals())");
+
+	// Replace the console to forward Pyodide output to Monaco
+	console.log('Sending LOADED message...');
+	self.postMessage(new RTVRunPy(-1, ResponseType.LOADED, ''));
+
+    console.log('Pyodide load complete.');
+}
+main()
