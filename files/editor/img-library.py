@@ -2,7 +2,7 @@ from js import XMLHttpRequest
 
 def download_file(filename):
 	req = XMLHttpRequest.new()
-	req.open('GET', '/editor/' + filename, False)
+	req.open('GET', 'editor/' + filename, False)
 	req.responseType = 'arraybuffer'
 	req.send(None)
 

@@ -163,7 +163,7 @@ let pyodide;
 async function main() {
     console.log('Loading pyodide...');
     importScripts('pyodide/pyodide.js');
-    pyodide = await loadPyodide({ indexURL: "/pyodide/" });
+    pyodide = await loadPyodide({ indexURL: "pyodide/" });
 
     // Then, import the modules
     console.log('Importing python modules...');
